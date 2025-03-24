@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import StarField from './StarField';
 import CustomCursor from './CustomCursor';
+import AIChatSupport from './AIChatSupport';
 
 interface LayoutProps {
   children: ReactNode;
@@ -35,6 +36,8 @@ const Layout = ({ children }: LayoutProps) => {
       
       {/* Footer */}
       <Footer />
+      
+      <AIChatSupport />
     </div>
   );
 };

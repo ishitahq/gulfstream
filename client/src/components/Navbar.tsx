@@ -1,107 +1,174 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'wouter';
 import { Menu, X } from 'lucide-react';
-import { NAV_ITEMS } from '@/utils/constants';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'wouter';
 
-const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const navVariants = {
+  hidden: {
+    y: -20,
+    opacity: 0
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
+const menuVariants = {
+  closed: {
+    opacity: 0,
+    height: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  },
+  open: {
+    opacity: 1,
+    height: "auto",
+    transition: {
+      duration: 0.4,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
+const Navbar: React.FC = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 0);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return (
-    <>
-      <motion.nav 
-        className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex justify-between items-center transition-colors duration-300 ${
-          scrolled ? 'backdrop-blur-md bg-[#0A0E1A]/50' : 'bg-transparent'
-        }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="flex items-center">
-          <svg className="h-10 md:h-12" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 10H100V12H20V10Z" fill="#E2BA5F"/>
-            <path d="M10 15C10 12.2386 12.2386 10 15 10H25C27.7614 10 30 12.2386 30 15V25C30 27.7614 27.7614 30 25 30H15C12.2386 30 10 27.7614 10 25V15Z" fill="#E2BA5F"/>
-            <path d="M35 15H95V20H35V15Z" fill="#E2BA5F"/>
-            <path d="M35 25H75V30H35V25Z" fill="#E2BA5F"/>
-          </svg>
-          <div className="ml-3 md:ml-6">
-            <span className="text-xl md:text-2xl font-montserrat font-semibold tracking-wide">GULFSTREAM</span>
-            <span className="hidden md:inline-block text-sm text-[#E2BA5F] ml-2 font-light">AEROSPACE</span>
+  const navItems = [
+    { label: 'Aircraft', href: '/aircraft' },
+    { label: 'Our Story', href: '/our-story' },
+    { label: 'Customer Support', href: '/customer-support' },
+    { label: 'Sustainability', href: '/sustainability' },
+    { label: 'Contact', href: '/contact' }
+  ];
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <nav className="navbar bg-black">
+        <div className="container-custom">
+          <div className="flex items-center justify-between h-16">
+            <div className="text-xl font-display text-white">GULFSTREAM</div>
           </div>
         </div>
-        
-        <div className="hidden lg:flex space-x-12 font-montserrat text-sm tracking-wider">
-          {NAV_ITEMS.map((item) => (
-            <Link 
-              key={item.label}
-              href={item.href}
-              className="nav-item opacity-90 hover:opacity-100 interactive relative"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-        
-        <div className="flex items-center space-x-6">
-          <motion.button 
-            className="hidden md:block px-5 py-2 border-2 border-[#E2BA5F] text-[#E2BA5F] hover:bg-[#E2BA5F] hover:text-[#0A0E1A] transition duration-300 font-montserrat text-sm tracking-wide interactive"
+      </nav>
+    );
+  }
+
+  return (
+    <motion.nav
+      className={`navbar bg-black ${isScrolled ? 'scrolled' : ''}`}
+      initial="hidden"
+      animate="visible"
+      variants={navVariants}
+    >
+      <div className="container-custom">
+        <div className="flex items-center justify-between h-16">
+          {/* Left Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.slice(0, 2).map((item) => (
+              <motion.a
+                key={item.href}
+                href={item.href}
+                className="nav-link text-white"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {item.label}
+              </motion.a>
+            ))}
+          </div>
+
+          {/* Center Logo */}
+          <motion.div
+            className="flex items-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            CONTACT
-          </motion.button>
-          <button 
-            className="text-white interactive"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-      </motion.nav>
+            <Link href="/">
+              <a className="text-2xl md:text-3xl font-display text-white font-light italic">
+                GULFSTREAM
+              </a>
+            </Link>
+          </motion.div>
 
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <motion.div 
-          className="fixed inset-0 z-40 bg-[#0A0E1A]/95 backdrop-blur-md lg:hidden pt-24"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-        >
-          <div className="container mx-auto px-6">
-            <div className="flex flex-col space-y-8 py-8">
-              {NAV_ITEMS.map((item) => (
-                <Link 
-                  key={item.label}
+          {/* Right Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.slice(2).map((item) => (
+              <motion.a
+                key={item.href}
+                href={item.href}
+                className="nav-link text-white"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {item.label}
+              </motion.a>
+            ))}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <motion.button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-lg hover:bg-gray-800 transition-colors text-white"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </motion.button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              className="md:hidden py-4 space-y-4"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={menuVariants}
+            >
+              {navItems.map((item) => (
+                <motion.a
+                  key={item.href}
                   href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-2xl font-montserrat tracking-wider border-b border-[#5A6E8C]/20 pb-4"
+                  className="block nav-link text-white"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  whileHover={{ x: 4 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {item.label}
-                </Link>
+                </motion.a>
               ))}
-              <motion.button 
-                className="mt-8 px-5 py-3 border-2 border-[#E2BA5F] text-[#E2BA5F] hover:bg-[#E2BA5F] hover:text-[#0A0E1A] transition duration-300 font-montserrat text-sm tracking-wide interactive w-full"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                CONTACT
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.nav>
   );
 };
 

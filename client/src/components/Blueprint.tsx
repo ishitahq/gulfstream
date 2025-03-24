@@ -1,128 +1,62 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { type BlueprintHotspot } from '@shared/types';
+import React from 'react';
+import '@google/model-viewer';
 
-interface BlueprintProps {
-  hotspots: BlueprintHotspot[];
-  blueprintImageUrl: string;
-}
-
-const Blueprint = ({ hotspots, blueprintImageUrl }: BlueprintProps) => {
-  const [activeHotspot, setActiveHotspot] = useState<BlueprintHotspot | null>(null);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (activeHotspot && containerRef.current) {
-        updateTooltipPosition(activeHotspot);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [activeHotspot]);
-
-  const updateTooltipPosition = (hotspot: BlueprintHotspot) => {
-    if (!containerRef.current) return;
-
-    const container = containerRef.current;
-    const containerRect = container.getBoundingClientRect();
-    
-    // Calculate absolute positions based on percentages
-    const x = (hotspot.x / 100) * containerRect.width;
-    const y = (hotspot.y / 100) * containerRect.height;
-    
-    // Adjust tooltip position to be above the hotspot
-    setTooltipPosition({
-      x: Math.min(Math.max(20, x), containerRect.width - 280),
-      y: Math.max(20, y - 120)
-    });
-  };
-
-  const handleHotspotMouseEnter = (hotspot: BlueprintHotspot) => {
-    setActiveHotspot(hotspot);
-    updateTooltipPosition(hotspot);
-  };
-
-  const handleHotspotMouseLeave = () => {
-    setActiveHotspot(null);
-  };
-
-  const getHotspotColor = (type: string) => {
-    switch (type) {
-      case 'aerodynamics': return 'bg-[#3A9AFF]';
-      case 'innovation': return 'bg-[#E2BA5F]';
-      case 'comfort': return 'bg-white';
-      default: return 'bg-[#E2BA5F]';
-    }
-  };
-
+// @ts-ignore
+const Blueprint: React.FC = () => {
   return (
-    <div ref={containerRef} className="relative h-[600px] md:h-[700px] lg:h-[800px] interactive">
-      {/* Blueprint Image */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <img 
-          src={blueprintImageUrl} 
-          alt="G800 Blueprint Schematic" 
-          className="max-w-full max-h-full object-contain opacity-80"
-        />
-      </div>
-      
-      {/* Interactive Blueprint Dots */}
-      {hotspots.map((hotspot) => (
-        <motion.div
-          key={hotspot.id}
-          className={`blueprint-dot absolute ${getHotspotColor(hotspot.type)} cursor-pointer z-10 interactive`}
-          style={{ 
-            top: `${hotspot.y}%`, 
-            left: `${hotspot.x}%`,
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            transform: 'translate(-50%, -50%)',
-            boxShadow: `0 0 10px ${hotspot.type === 'aerodynamics' ? '#3A9AFF' : hotspot.type === 'innovation' ? '#E2BA5F' : 'white'}`
-          }}
-          onMouseEnter={() => handleHotspotMouseEnter(hotspot)}
-          onMouseLeave={handleHotspotMouseLeave}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          whileHover={{ scale: 1.5 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.div
-            className="absolute top-1/2 left-1/2 w-5 h-5 border border-current rounded-full transform -translate-x-1/2 -translate-y-1/2"
-            initial={{ opacity: 1, scale: 1 }}
-            animate={{ opacity: 0, scale: 2 }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-        </motion.div>
-      ))}
-      
-      {/* Blueprint Info Display */}
-      <AnimatePresence>
-        {activeHotspot && (
-          <motion.div 
-            className="blueprint-info absolute z-20 bg-[#0A0E1A]/90 border border-[#E2BA5F] p-3 rounded-sm pointer-events-none"
-            style={{ 
-              left: tooltipPosition.x,
-              top: tooltipPosition.y,
-            }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-          >
-            <h4 className="text-[#E2BA5F] text-sm font-montserrat font-medium mb-1">
-              {activeHotspot.title}
-            </h4>
-            <p className="text-xs leading-relaxed text-white">
-              {activeHotspot.description}
+    <section className="relative py-20 overflow-hidden">
+      <div className="blueprint-grid absolute inset-0" />
+      <div className="container-custom relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="heading-lg mb-6">
+              Experience <span className="blueprint-text">Innovation</span>
+            </h2>
+            <p className="text-muted mb-8">
+              Explore our aircraft in stunning detail. Every curve and feature
+              represents our commitment to excellence in aviation design.
             </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400" />
+                <span>Advanced aerodynamics</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400" />
+                <span>Luxurious interior design</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400" />
+                <span>State-of-the-art technology</span>
+              </div>
+            </div>
+          </div>
+          <div className="relative">
+            <model-viewer
+              src="/models/airplane.glb"
+              environment-image="/models/aircraft-hangar.hdr"
+              poster="/images/model-poster.svg"
+              shadow-intensity="1"
+              camera-controls
+              auto-rotate
+              rotation-per-second="30deg"
+              interaction-prompt="none"
+              exposure="1"
+              className="model-viewer"
+              loading="eager"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+            >
+              <div className="absolute inset-0 flex items-center justify-center" slot="poster">
+                <div className="inline-block px-4 py-2 rounded-lg bg-sky-500 dark:bg-sky-400 text-white">
+                  Loading 3D Model...
+                </div>
+              </div>
+            </model-viewer>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
