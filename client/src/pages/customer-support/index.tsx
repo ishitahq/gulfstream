@@ -59,7 +59,7 @@ const CustomerSupport: React.FC = () => {
       <section className="relative h-[60vh] min-h-[600px] flex items-center">
         <div className="absolute inset-0 bg-black/50 z-10" />
         <img
-          src="/images/support-hero.jpg"
+          src="client/public/images/customer-support-hero.jpg"
           alt="Customer Support"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -178,7 +178,7 @@ const CustomerSupport: React.FC = () => {
             </div>
             <div className="relative h-[400px]">
               <img
-                src="/images/service-network.jpg"
+                src="client/public/images/grid-2.jpg"
                 alt="Global Service Network"
                 className="absolute inset-0 w-full h-full object-cover rounded-lg"
               />
