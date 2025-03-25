@@ -8,7 +8,7 @@ const OurStory: React.FC = () => {
       <section className="relative h-[60vh] min-h-[600px] flex items-center">
         <div className="absolute inset-0 bg-black/50 z-10" />
         <img
-          src="/images/our-story-hero.jpg"
+          src="client/public/images/grid-3.jpg"
           alt="Gulfstream legacy"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -58,7 +58,7 @@ const OurStory: React.FC = () => {
             </div>
             <div className="relative h-[400px]">
               <img
-                src="/images/vision.jpg"
+                src="client/public/images/luxury-1.jpg"
                 alt="Gulfstream vision"
                 className="absolute inset-0 w-full h-full object-cover rounded-lg"
               />
