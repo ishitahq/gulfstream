@@ -210,7 +210,7 @@ const AircraftFleet: React.FC = () => {
               className="relative h-[400px]"
             >
               <img
-                src="/images/special-missions.webp"
+                src="/images/grid-1.jpg"
                 alt="Special Missions"
                 className="absolute inset-0 w-full h-full object-cover rounded-lg"
               />
