@@ -59,7 +59,7 @@ const Sustainability: React.FC = () => {
       <section className="relative h-[60vh] min-h-[600px] flex items-center">
         <div className="absolute inset-0 bg-black/50 z-10" />
         <img
-          src="/images/sustainability-hero.webp"
+          src="client/public/images/sustainability-hero.webp"
           alt="Sustainability"
           className="absolute inset-0 w-full h-full object-cover"
         />
