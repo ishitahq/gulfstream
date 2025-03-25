@@ -36,7 +36,11 @@ const AIAircraftConfigurator: React.FC = () => {
     }
   ]);
 
-  const [aiRecommendations, setAiRecommendations] = useState<string[]>([]);
+  const aiRecommendations = [
+    'Consider upgrading to the Enhanced Avionics Suite for better performance.',
+    'The Pearl Metallic paint scheme is popular among our customers.',
+    'The Multi-Zone cabin layout offers the best flexibility for different use cases.'
+  ];
 
   useEffect(() => {
     const videoElement = document.getElementById('intro-video') as HTMLVideoElement;
@@ -45,27 +49,10 @@ const AIAircraftConfigurator: React.FC = () => {
     }
   }, []);
 
-  const handleOptionSelect = async (index: number, option: string) => {
+  const handleOptionSelect = (index: number, option: string) => {
     const newConfig = [...configuration];
     newConfig[index].selectedOption = option;
     setConfiguration(newConfig);
-
-    // Get AI recommendations when an option is selected
-    setLoading(true);
-    try {
-      const response = await fetch('/api/configure', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ configuration: newConfig })
-      });
-
-      const data = await response.json();
-      setAiRecommendations(data.recommendations);
-    } catch (error) {
-      console.error('Error getting recommendations:', error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -104,37 +91,22 @@ const AIAircraftConfigurator: React.FC = () => {
           ))}
         </div>
 
-        <div className="card h-fit">
+        <div className="card h-fit md:col-span-2">
           <h3 className="text-xl font-medium mb-4">AI Recommendations</h3>
-          {loading ? (
-            <div className="flex items-center justify-center h-32">
-              <div className="flex space-x-2">
-                <div className="w-3 h-3 rounded-full bg-sky-500 dark:bg-sky-400 animate-bounce" />
-                <div className="w-3 h-3 rounded-full bg-sky-500 dark:bg-sky-400 animate-bounce delay-100" />
-                <div className="w-3 h-3 rounded-full bg-sky-500 dark:bg-sky-400 animate-bounce delay-200" />
-              </div>
-            </div>
-          ) : aiRecommendations.length > 0 ? (
-            <ul className="space-y-3">
-              {aiRecommendations.map((recommendation, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-start gap-3"
-                >
-                  <span className="mt-1 w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400 shrink-0" />
-                  <span>{recommendation}</span>
-                </motion.li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-muted">
-              Select your preferences, and our AI will provide personalized recommendations
-              for your aircraft configuration.
-            </p>
-          )}
+          <ul className="space-y-3">
+            {aiRecommendations.map((recommendation, index) => (
+              <motion.li
+                key={index}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-start gap-3"
+              >
+                <span className="mt-1 w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400 shrink-0" />
+                <span>{recommendation}</span>
+              </motion.li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
