@@ -5,6 +5,7 @@ import { Link } from 'wouter';
 
 const HomePage: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {
     // Show content after video transition
@@ -19,7 +20,7 @@ const HomePage: React.FC = () => {
     <main>
       {/* Video Transition */}
       <AnimatePresence>
-        {!showContent && (
+        {!showContent && !videoError && (
           <motion.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -29,8 +30,10 @@ const HomePage: React.FC = () => {
             <video
               autoPlay
               muted
+              playsInline
               className="w-full h-full object-cover"
               onEnded={() => setShowContent(true)}
+              onError={() => setVideoError(true)}
             >
               <source src="/videos/hero-transition.mp4" type="video/mp4" />
             </video>
@@ -167,10 +170,10 @@ const HomePage: React.FC = () => {
                 </motion.h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
-                    '/images/grid-1.jpg',
-                    '/images/grid-2.jpg',
-                    '/images/grid-3.jpg',
-                    '/images/grid-4.jpg'
+                    '/images/grid-1.webp',
+                    '/images/grid-2.webp',
+                    '/images/grid-3.webp',
+                    '/images/grid-4.webp'
                   ].map((image, index) => (
                     <motion.div
                       key={image}
@@ -200,6 +203,85 @@ const HomePage: React.FC = () => {
                               View Gallery <ArrowRight className="ml-2 w-4 h-4" />
                             </motion.a>
                           </Link>
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Masonry Image Grid */}
+            <section className="py-20 bg-secondary/5">
+              <div className="container-custom">
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="heading-lg mb-12 text-center"
+                >
+                  Explore Our <span className="text-primary">World</span>
+                </motion.h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {[
+                    {
+                      src: '/images/gallery/interior-1.webp',
+                      alt: 'Luxury Interior',
+                      span: 'col-span-2 row-span-2'
+                    },
+                    {
+                      src: '/images/gallery/exterior-1.webp',
+                      alt: 'Aircraft Exterior'
+                    },
+                    {
+                      src: '/images/gallery/cockpit-1.webp',
+                      alt: 'Modern Cockpit'
+                    },
+                    {
+                      src: '/images/gallery/detail-1.webp',
+                      alt: 'Design Detail',
+                      span: 'col-span-2'
+                    },
+                    {
+                      src: '/images/gallery/aerial-1.webp',
+                      alt: 'Aerial View'
+                    },
+                    {
+                      src: '/images/gallery/lounge-1.webp',
+                      alt: 'Private Lounge',
+                      span: 'row-span-2'
+                    },
+                    {
+                      src: '/images/gallery/night-1.webp',
+                      alt: 'Night Flight'
+                    },
+                    {
+                      src: '/images/gallery/cabin-1.webp',
+                      alt: 'Cabin View',
+                      span: 'col-span-2'
+                    }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.alt}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`relative group overflow-hidden rounded-lg ${item.span || ''}`}
+                      style={{ minHeight: item.span?.includes('row-span-2') ? '400px' : '200px' }}
+                    >
+                      <img
+                        src={item.src}
+                        alt={item.alt}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          className="text-white text-center p-4"
+                        >
+                          <h3 className="text-xl font-light">{item.alt}</h3>
                         </motion.div>
                       </div>
                     </motion.div>
@@ -241,11 +323,95 @@ const HomePage: React.FC = () => {
                     className="relative h-[400px]"
                   >
                     <img
-                      src="/images/innovation.jpg"
+                      src="/images/innovation.webp"
                       alt="Innovation"
                       className="absolute inset-0 w-full h-full object-cover rounded-lg"
                     />
                   </motion.div>
+                </div>
+              </div>
+            </section>
+
+            {/* AI Features Section */}
+            <section className="py-20">
+              <div className="container-custom">
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="heading-lg mb-12 text-center"
+                >
+                  Intelligent <span className="text-primary">Solutions</span>
+                </motion.h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {[
+                    {
+                      title: 'Virtual Aircraft Assistant',
+                      description: 'Our AI-powered assistant provides instant answers about aircraft specifications, maintenance schedules, and flight planning.',
+                      features: [
+                        'Real-time aircraft status monitoring',
+                        'Predictive maintenance insights',
+                        'Flight route optimization',
+                        'Weather pattern analysis'
+                      ]
+                    },
+                    {
+                      title: 'Smart Cabin Control',
+                      description: 'Advanced AI system that learns passenger preferences and automatically adjusts cabin environment.',
+                      features: [
+                        'Personalized temperature control',
+                        'Automated lighting adjustment',
+                        'Voice-activated systems',
+                        'Smart entertainment suggestions'
+                      ]
+                    },
+                    {
+                      title: 'Performance Analytics',
+                      description: 'Sophisticated AI algorithms analyze flight data to optimize aircraft performance and efficiency.',
+                      features: [
+                        'Fuel efficiency optimization',
+                        'Performance trend analysis',
+                        'Cost reduction insights',
+                        'Environmental impact tracking'
+                      ]
+                    }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="card backdrop-blur-sm bg-white/5"
+                    >
+                      <div className="p-6">
+                        <h3 className="heading-md mb-4 text-primary">{item.title}</h3>
+                        <p className="text-gray-300 mb-6">{item.description}</p>
+                        <ul className="space-y-3">
+                          {item.features.map((feature, idx) => (
+                            <motion.li
+                              key={idx}
+                              initial={{ opacity: 0, x: -20 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 0.2 + idx * 0.1 }}
+                              className="flex items-center text-sm text-gray-400"
+                            >
+                              <span className="w-2 h-2 bg-primary rounded-full mr-3" />
+                              {feature}
+                            </motion.li>
+                          ))}
+                        </ul>
+                        <motion.button
+                          whileHover={{ scale: 1.02, x: 5 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="mt-6 text-primary flex items-center text-sm font-light"
+                        >
+                          Learn More <ArrowRight className="ml-2 w-4 h-4" />
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
             </section>
@@ -264,17 +430,17 @@ const HomePage: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {[
                     {
-                      image: '/images/luxury-1.jpg',
+                      image: '/images/luxury-1.webp',
                       title: 'Interior Excellence',
                       description: 'Unparalleled comfort and sophistication'
                     },
                     {
-                      image: '/images/luxury-2.jpg',
+                      image: '/images/luxury-2.webp',
                       title: 'Advanced Technology',
                       description: 'State-of-the-art systems and connectivity'
                     },
                     {
-                      image: '/images/luxury-3.jpg',
+                      image: '/images/luxury-3.webp',
                       title: 'Global Reach',
                       description: 'Unmatched range and performance'
                     }

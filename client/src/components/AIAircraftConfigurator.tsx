@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface ConfigOption {
@@ -38,6 +38,13 @@ const AIAircraftConfigurator: React.FC = () => {
 
   const [aiRecommendations, setAiRecommendations] = useState<string[]>([]);
 
+  useEffect(() => {
+    const videoElement = document.getElementById('intro-video') as HTMLVideoElement;
+    if (videoElement) {
+      videoElement.play();
+    }
+  }, []);
+
   const handleOptionSelect = async (index: number, option: string) => {
     const newConfig = [...configuration];
     newConfig[index].selectedOption = option;
@@ -63,6 +70,7 @@ const AIAircraftConfigurator: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+      <video id="intro-video" src="/public/videos/hero-transition.mp4" className="w-full h-auto mb-8" />
       <h2 className="heading-lg mb-8">AI-Powered Aircraft Configuration</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -133,4 +141,4 @@ const AIAircraftConfigurator: React.FC = () => {
   );
 };
 
-export default AIAircraftConfigurator; 
+export default AIAircraftConfigurator;

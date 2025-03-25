@@ -59,7 +59,7 @@ const Sustainability: React.FC = () => {
       <section className="relative h-[60vh] min-h-[600px] flex items-center">
         <div className="absolute inset-0 bg-black/50 z-10" />
         <img
-          src="/images/sustainability-hero.jpg"
+          src="/images/sustainability-hero.webp"
           alt="Sustainability"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -153,7 +153,7 @@ const Sustainability: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="relative h-[400px]">
               <img
-                src="/images/sustainable-aviation.jpg"
+                src="/images/sustainable-aviation.webp"
                 alt="Sustainable Aviation"
                 className="absolute inset-0 w-full h-full object-cover rounded-lg"
               />

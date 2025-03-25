@@ -103,7 +103,7 @@ const Navbar: React.FC = () => {
             whileTap={{ scale: 0.95 }}
           >
             <Link href="/">
-              <a className="text-2xl md:text-3xl font-display text-white font-light italic">
+              <a className="logo text-white font-light">
                 GULFSTREAM
               </a>
             </Link>
