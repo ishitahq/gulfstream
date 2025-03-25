@@ -1,0 +1,348 @@
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stockholm&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sanford&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0 0;
+    --foreground: 255 255 255;
+    --navbar-bg: 0 0 0;
+    --transition-duration: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+    --font-playfair: 'Playfair Display', serif;
+    --font-julius: 'Julius Sans One', sans-serif;
+    --font-stockholm: 'Stockholm', sans-serif;
+    --font-sanford: 'Sanford', sans-serif;
+  }
+
+  .dark {
+    --background: 0 0 0;
+    --foreground: 255 255 255;
+    --navbar-bg: 0 0 0;
+  }
+
+  /* Base theme transitions */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: var(--transition-timing);
+    transition-duration: var(--transition-duration);
+  }
+
+  /* Prevent flash of unstyled content */
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* Add smooth transitions for theme changes */
+  html {
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  body {
+    font-family: var(--font-stockholm), var(--font-sanford), sans-serif;
+  }
+}
+
+/* Base styles */
+body {
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Enhanced animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Apply animations to elements */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Enhanced hover effects */
+.hover-lift {
+  transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Remove cursor none temporarily for debugging */
+html {
+  /* cursor: none; */
+}
+
+/* Page Transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--transition-duration) var(--transition-timing),
+              transform var(--transition-duration) var(--transition-timing);
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity var(--transition-duration) var(--transition-timing),
+              transform var(--transition-duration) var(--transition-timing);
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: black;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+.navbar .logo {
+  font-family: var(--font-playfair), serif;
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.navbar.scrolled {
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  transform: translateY(0);
+}
+
+/* Container */
+.container-custom {
+  @apply container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Typography with enhanced transitions */
+.heading-xl {
+  @apply text-4xl md:text-5xl lg:text-6xl font-light;
+  font-family: var(--font-julius), sans-serif;
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+.heading-lg {
+  @apply text-3xl md:text-4xl font-light;
+  font-family: var(--font-julius), sans-serif;
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+.heading-md {
+  @apply text-2xl md:text-3xl font-light;
+  font-family: var(--font-julius), sans-serif;
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+/* Navigation with enhanced hover effects */
+.nav-link {
+  @apply relative transition-all duration-300;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+.nav-link:hover {
+  color: white;
+  transform: translateY(-2px);
+}
+
+.nav-link::after {
+  content: '';
+  @apply absolute left-0 -bottom-1 w-0 h-0.5 bg-sky-500;
+  transition: width var(--transition-duration) var(--transition-timing);
+}
+
+.nav-link:hover::after {
+  @apply w-full;
+}
+
+/* Enhanced Buttons */
+.btn {
+  @apply px-6 py-3 rounded-lg font-medium;
+  transition: all var(--transition-duration) var(--transition-timing);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgb(var(--foreground) / 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:hover::before {
+  width: 300%;
+  height: 300%;
+}
+
+.btn:hover {
+  @apply -translate-y-1 shadow-lg;
+}
+
+.btn:active {
+  @apply translate-y-0 shadow-md;
+}
+
+.btn-primary {
+  @apply bg-sky-500 text-white shadow-md hover:shadow-sky-500/20 dark:bg-sky-400;
+}
+
+.btn-secondary {
+  background-color: rgb(var(--background) / 0.1);
+  color: rgb(var(--foreground));
+  @apply shadow-md hover:shadow-gray-500/20 dark:hover:shadow-gray-400/20;
+}
+
+/* Enhanced Cards */
+.card {
+  background-color: rgb(var(--background) / 0.05);
+  @apply rounded-lg p-6;
+  transition: all var(--transition-duration) var(--transition-timing);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgb(var(--foreground) / 0.05) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform var(--transition-duration) var(--transition-timing);
+}
+
+.card:hover::before {
+  transform: translateX(100%);
+}
+
+.card:hover {
+  background-color: rgb(var(--background) / 0.1);
+  @apply shadow-lg -translate-y-1;
+}
+
+/* Blueprint Grid with enhanced effects */
+.blueprint-grid {
+  background-color: rgb(var(--background));
+  background-image: 
+    linear-gradient(theme('colors.sky.500/0.1') 1px, transparent 1px),
+    linear-gradient(90deg, theme('colors.sky.500/0.1') 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+.dark .blueprint-grid {
+  background-image: 
+    linear-gradient(theme('colors.sky.400/0.1') 1px, transparent 1px),
+    linear-gradient(90deg, theme('colors.sky.400/0.1') 1px, transparent 1px);
+}
+
+.blueprint-text {
+  @apply text-sky-500 dark:text-sky-400;
+  text-shadow: 0 0 10px currentColor;
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+/* Interactive elements with enhanced animations */
+.interactive {
+  transition: all var(--transition-duration) var(--transition-timing);
+  transform: translate3d(0, 0, 0);
+}
+
+.interactive:hover {
+  @apply -translate-y-1;
+  filter: brightness(1.1);
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-sky-500/50 dark:bg-sky-400/50 rounded-full;
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-sky-500/70 dark:bg-sky-400/70;
+} 
